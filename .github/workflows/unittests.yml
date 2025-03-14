@@ -60,6 +60,7 @@ jobs:
 
     - name: Install sudo 
       run: |
+        apt-get update
         apt-get install sudo -y
         usermod -aG sudo root 
      
