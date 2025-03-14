@@ -12,7 +12,7 @@ def test_calc(aiida_computer_local, aiida_code_installed, tmp_path):
     import functools
     result = subprocess.run(["which", "icon"], capture_output=True)
     if result.returncode:
-        raise RuntimeError("Could not fine icon executable for tests.")
+        raise RuntimeError("Could not find icon executable for tests.")
     filepath_executable = result.stdout.decode().strip()
     code = aiida_code_installed(default_calc_job_plugin="icon.icon", computer=aiida_computer_local(), filepath_executable=filepath_executable)
     datapath = pathlib.Path(__file__).parent.absolute() / "data" / "simple_icon_run"

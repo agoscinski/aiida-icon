@@ -36,6 +36,13 @@ jobs:
         - 5672:5672
 
     steps:
+    # workaround https://github.com/actions/setup-python/issues/816#issuecomment-2100504677 need to change user in docker image?
+    - name: Change ownership of /github/home
+      run: | 
+        echo "whoami $(whoami)"
+        ls -l /github/home
+        sudo chown -R $(whoami) /github/home
+
     - uses: actions/checkout@v4
 
     - name: Set up Python ${{matrix.python-version}}
