@@ -40,8 +40,9 @@ jobs:
     - name: Change ownership of /github/home
       run: | 
         echo "whoami $(whoami)"
+        id 
         ls -l /github/
-        sudo chown -R $(whoami) /github/home
+        chown -R $(whoami) /github/home
 
     - uses: actions/checkout@v4
 
