@@ -58,17 +58,18 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install sudo 
-      run: |
-        apt-get update
-        apt-get install sudo -y
-        usermod -aG sudo root 
-     
-    - name: Setup upterm session
-      uses: lhotari/action-upterm@v1
+    #- name: Install sudo 
+    #  run: |
+    #    apt-get update
+    #    apt-get install sudo -y
+    #    usermod -aG sudo root 
+    # 
+    #- name: Setup upterm session
+    #  uses: lhotari/action-upterm@v1
 
     - name: Loading spack dep
       run: |
+        source /etc/profile.d/spack.sh
         spack load icon
         which icon
 
