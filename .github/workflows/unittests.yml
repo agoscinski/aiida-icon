@@ -43,6 +43,7 @@ jobs:
         id 
         ls -l /github/
         chown -R $(whoami) /github/home
+        ls -l /github/
 
     - uses: actions/checkout@v4
 
@@ -51,10 +52,18 @@ jobs:
       with:
         python-version: ${{matrix.python-version}}
 
+    - name: Install the latest version of uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: "latest"
+
+    - name: Setup upterm session
+      uses: lhotari/action-upterm@v1
+
     - name: install Python dependencies
       run: |
-        pip install --upgrade pip 
-        pip install hatch
+        uv pip install --upgrade pip 
+        uv pip install hatch
 
     - name: run unittests
       run: hatch test -py ${{matrix.python-version}} -n auto -v
