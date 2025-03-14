@@ -69,7 +69,8 @@ jobs:
 
     - name: Loading spack dep
       run: |
-        source /etc/profile.d/spack.sh
+        . /opt/spack/share/spack/setup-env.sh
+        spack bootstrap now
         spack load icon
         which icon
 
