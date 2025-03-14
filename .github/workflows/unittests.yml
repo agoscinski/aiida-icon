@@ -56,14 +56,13 @@ jobs:
       uses: astral-sh/setup-uv@v5
       with:
         python-version: ${{ matrix.python-version }}
-      run: |
-        uv venv
 
     #- name: Setup upterm session
     #  uses: lhotari/action-upterm@v1
 
     - name: install Python dependencies
       run: |
+        uv venv
         uv pip install --upgrade pip 
         uv pip install hatch
 
