@@ -58,8 +58,14 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    #- name: Setup upterm session
-    #  uses: lhotari/action-upterm@v1
+    - name: Install sudo 
+      run: |
+        apt-get install sudo -y
+        usermod -aG sudo root 
+     
+    - name: Setup upterm session
+      uses: lhotari/action-upterm@v1
+
     - name: Loading spack dep
       run: |
         spack load icon
