@@ -10,12 +10,9 @@ jobs:
   unittests:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    container:
-      image: alexgoes/icon-docker:icon2024.10-ubuntu24.04
     strategy:
       matrix:
-        #python-version: ["3.10", "3.11", "3.12", "3.13"]
-        python-version: ["3.12"]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
         aiida-version: ['stable']
     services:
       postgres:
@@ -37,48 +34,38 @@ jobs:
         - 5672:5672
 
     steps:
-    # workaround https://github.com/actions/setup-python/issues/816#issuecomment-2100504677 need to change user in docker image?
-    - name: Change ownership of /github/home
-      run: | 
-        echo "whoami $(whoami)"
-        id 
-        ls -l /github/
-        chown -R $(whoami) /github/home
-        ls -l /github/
-
     - uses: actions/checkout@v4
+
+    - name: Set up Spack
+      uses: spack/setup-spack@v2
+      with:
+        buildcache: true  # Configure oci://ghcr.io/spack/github-actions-buildcache
+
+    - name: Install
+      run: spack -e . install
+
+    - name: Run
+      shell: spack-bash
+      run: |
+        spack env activate .
+        python3 -c 'print("hello world")'
+
+    - name: Push packages and update index
+      env:
+        GITHUB_USER: ${{ github.actor }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: spack -e . buildcache push --base-image ubuntu:latest --update-index local-buildcache
+      if: ${{ !cancelled() }}
 
     - name: Set up Python ${{matrix.python-version}}
       uses: actions/setup-python@v5
       with:
         python-version: ${{matrix.python-version}}
 
-    - name: Install the latest version of uv
-      uses: astral-sh/setup-uv@v5
-      with:
-        python-version: ${{ matrix.python-version }}
-
-    #- name: Install sudo 
-    #  run: |
-    #    apt-get update
-    #    apt-get install sudo -y
-    #    usermod -aG sudo root 
-    # 
-    #- name: Setup upterm session
-    #  uses: lhotari/action-upterm@v1
-
-    - name: Loading spack dep
-      run: |
-        . /opt/spack/share/spack/setup-env.sh
-        spack bootstrap now
-        spack load icon
-        which icon
-
     - name: install Python dependencies
       run: |
-        uv venv
-        uv pip install --upgrade pip 
-        uv pip install hatch
+        pip install --upgrade pip 
+        pip install hatch
 
     - name: run unittests
       run: hatch test -py ${{matrix.python-version}} -n auto -v
