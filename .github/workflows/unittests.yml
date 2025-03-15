@@ -48,6 +48,8 @@ jobs:
       shell: spack-bash
       run: |
         spack env activate .
+        spack env status
+
 
     - name: Push packages and update index
       env:
@@ -64,9 +66,12 @@ jobs:
     - name: install Python dependencies
       shell: spack-bash
       run: |
+        spack env activate .
         pip install --upgrade pip 
         pip install hatch
 
     - name: run unittests
       shell: spack-bash
-      run: hatch test -py ${{matrix.python-version}} -n auto -v
+      run: |
+        spack env activate .
+        hatch test -py ${{matrix.python-version}} -n auto -v
