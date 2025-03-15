@@ -48,7 +48,6 @@ jobs:
       shell: spack-bash
       run: |
         spack env activate .
-        python3 -c 'print("hello world")'
 
     - name: Push packages and update index
       env:
@@ -63,9 +62,11 @@ jobs:
         python-version: ${{matrix.python-version}}
 
     - name: install Python dependencies
+      shell: spack-bash
       run: |
         pip install --upgrade pip 
         pip install hatch
 
     - name: run unittests
+      shell: spack-bash
       run: hatch test -py ${{matrix.python-version}} -n auto -v
