@@ -46,9 +46,10 @@ jobs:
 
     - name: Install
       run: |
-        spack install gcc@11.4.0
-        spack load gcc@11.4.0
-        spack compiler find
+        sudo apt install gcc-11 g++-11 gfortran-11
+        which gcc-11
+        which g++-11
+        which gfortran-11
         spack -e . install
 
     - name: Run
