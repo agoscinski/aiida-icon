@@ -53,11 +53,9 @@ jobs:
         spack -e . install
 
     - name: Run
-      shell: spack-bash
       run: |
         spack env activate .
         spack env status
-
 
     - name: Push packages and update index
       env:
