@@ -55,7 +55,6 @@ jobs:
         which gfortran-11
 
     - name: Setup upterm session
-      shell: spack-bash {0}
       uses: lhotari/action-upterm@v1
 
     - name: Run
