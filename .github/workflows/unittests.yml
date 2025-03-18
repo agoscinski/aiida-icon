@@ -39,13 +39,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    #- name: Set up Spack
-    #  uses: spack/setup-spack@v2
-    #  #env:
-    #  #  GITHUB_USER: ${{ github.actor }}
-    #  #  GITHUB_TOKEN: ${{ secrets.SPACK_OCI_TOKEN }}
-    #  with:
-    #    buildcache: true  # Configure oci://ghcr.io/spack/github-actions-buildcache
+    - name: Set up Spack
+      uses: spack/setup-spack@v2
+      #env:
+      #  GITHUB_USER: ${{ github.actor }}
+      #  GITHUB_TOKEN: ${{ secrets.SPACK_OCI_TOKEN }}
+      with:
+        buildcache: true  # Configure oci://ghcr.io/spack/github-actions-buildcache
 
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@v3
