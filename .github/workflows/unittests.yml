@@ -76,7 +76,8 @@ jobs:
       with:
         python-version: ${{matrix.python-version}}
 
-    - name: install Python dependencies
+    - name: Install Python dependencies
+      shell: spack-bash {0}
       run: |
         spack env activate .
         pip install --upgrade pip 
