@@ -41,48 +41,52 @@ jobs:
 
     - name: Set up Spack
       uses: spack/setup-spack@v2
-      env:
-        GITHUB_USER: ${{ github.actor }}
-        GITHUB_TOKEN: ${{ secrets.SPACK_OCI_TOKEN }}
+      #env:
+      #  GITHUB_USER: ${{ github.actor }}
+      #  GITHUB_TOKEN: ${{ secrets.SPACK_OCI_TOKEN }}
       with:
         buildcache: true  # Configure oci://ghcr.io/spack/github-actions-buildcache
-
-    - name: Install
-      run: |
-        sudo apt install gcc-11 g++-11 gfortran-11
-        which gcc-11
-        which g++-11
-        which gfortran-11
 
     - name: Setup upterm session
       uses: lhotari/action-upterm@v1
 
-    - name: Run
-      shell: spack-bash {0}
-      run: |
-        spack env activate .
-        spack env status
+    #- name: Install
+    #  run: |
+    #    sudo apt install gcc-11 g++-11 gfortran-11
+    #    which gcc-11
+    #    which g++-11
+    #    which gfortran-11
+    #    echo "spack -e . install"
 
-    - name: Push packages and update index
-      env:
-        GITHUB_USER: ${{ github.actor }}
-        GITHUB_TOKEN: ${{ secrets.SPACK_OCI_TOKEN }}
-      run: spack -e . buildcache push --base-image ubuntu:latest --update-index local-buildcache
-      if: ${{ !cancelled() }}
+    #- name: Setup upterm session
+    #  uses: lhotari/action-upterm@v1
 
-    - name: Set up Python ${{matrix.python-version}}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{matrix.python-version}}
+    #- name: Run
+    #  shell: spack-bash {0}
+    #  run: |
+    #    spack env activate .
+    #    spack env status
 
-    - name: install Python dependencies
-      run: |
-        spack env activate .
-        pip install --upgrade pip 
-        pip install hatch
+    #- name: Push packages and update index
+    #  env:
+    #    GITHUB_USER: ${{ github.actor }}
+    #    GITHUB_TOKEN: ${{ secrets.SPACK_OCI_TOKEN }}
+    #  run: spack -e . buildcache push --base-image ubuntu:latest --update-index local-buildcache
+    #  if: ${{ !cancelled() }}
 
-    - name: run unittests
-      shell: spack-bash {0}
-      run: |
-        spack env activate .
-        hatch test -py ${{matrix.python-version}} -n auto -v
+    #- name: Set up Python ${{matrix.python-version}}
+    #  uses: actions/setup-python@v5
+    #  with:
+    #    python-version: ${{matrix.python-version}}
+
+    #- name: install Python dependencies
+    #  run: |
+    #    spack env activate .
+    #    pip install --upgrade pip 
+    #    pip install hatch
+
+    #- name: run unittests
+    #  shell: spack-bash {0}
+    #  run: |
+    #    spack env activate .
+    #    hatch test -py ${{matrix.python-version}} -n auto -v
