@@ -71,15 +71,17 @@ jobs:
       run: spack -e . buildcache push --base-image ubuntu:latest --update-index local-buildcache
       if: ${{ !cancelled() }}
 
-    - name: Set up Python ${{matrix.python-version}}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{matrix.python-version}}
+    #- name: Set up Python ${{matrix.python-version}}
+    #  uses: actions/setup-python@v5
+    #  with:
+    #    python-version: ${{matrix.python-version}}
 
     - name: Install Python dependencies
       shell: spack-bash {0}
       run: |
         spack env activate .
+        spack install python@${{matrix.python-version}}
+        spack load python
         pip install --upgrade pip 
         pip install hatch
 
@@ -87,4 +89,5 @@ jobs:
       shell: spack-bash {0}
       run: |
         spack env activate .
+        spack load python
         hatch test -py ${{matrix.python-version}} -n auto -v

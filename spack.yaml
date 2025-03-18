@@ -3,7 +3,6 @@ spack:
   specs:
   - icon
 
-
   'compilers:':
   - compiler:
       spec: gcc@11.4.0
@@ -29,12 +28,6 @@ spack:
       require: target=x86_64
 
   mirrors:
-    #my-mirror:
-    #  url: oci://ghcr.io/blagithubuser/buildcache-blauser-blahost
-    #  access_pair:
-    #    id: blauser
-    #    secret_variable: MY_OCI_TOKEN
-    #  signed: false
     local-buildcache:
       url: oci://ghcr.io/agoscinski/spack-buildcache
       binary: true
