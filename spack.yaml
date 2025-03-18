@@ -35,4 +35,4 @@ spack:
       signed: false
       access_pair:
         id_variable: GITHUB_USER
-        secret_variable: SPACK_OCI_TOKEN
+        secret_variable: GITHUB_TOKEN # note developer settings -> token classics with "write:packages" permission and then add this token as secret to repo

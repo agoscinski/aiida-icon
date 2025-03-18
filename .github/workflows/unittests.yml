@@ -41,6 +41,9 @@ jobs:
 
     - name: Set up Spack
       uses: spack/setup-spack@v2
+      env:
+        GITHUB_USER: ${{ github.actor }}
+        GITHUB_TOKEN: ${{ secrets.SPACK_OCI_TOKEN }}
       with:
         buildcache: true  # Configure oci://ghcr.io/spack/github-actions-buildcache
 
