@@ -44,7 +44,10 @@ jobs:
       with:
         buildcache: true  # Configure oci://ghcr.io/spack/github-actions-buildcache
 
-    - name: Install icon through spack
+    #- name: Setup tmate session
+    #  uses: mxschmitt/action-tmate@v3
+
+    - name: Install
       env:
         GITHUB_USER: ${{ github.actor }}
         GITHUB_TOKEN: ${{ secrets.SPACK_OCI_TOKEN }}
@@ -53,9 +56,10 @@ jobs:
         which gcc-11
         which g++-11
         which gfortran-11
+        spack -e . add python@${{matrix.python-version}}
         spack -e . install
 
-    - name: Check installation
+    - name: Run
       shell: spack-bash {0}
       run: |
         spack env activate .
@@ -68,20 +72,25 @@ jobs:
       run: spack -e . buildcache push --base-image ubuntu:latest --update-index local-buildcache
       if: ${{ !cancelled() }}
 
-    - name: Set up Python ${{matrix.python-version}}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{matrix.python-version}}
+    #- name: Set up Python ${{matrix.python-version}}
+    #  uses: actions/setup-python@v5
+    #  with:
+    #    python-version: ${{matrix.python-version}}
 
     - name: Install Python dependencies
+      shell: spack-bash {0}
       run: |
+        spack env activate .
+        which python
+        which pip
         pip install --upgrade pip 
         pip install hatch
 
-    - name: Run unittests
+    - name: run unittests
+      shell: spack-bash {0}
       run: |
-        hatch test -py ${{matrix.python-version}} -n auto -v
-
+        spack env activate .
+        hatch test -py ${{matrix.python-version}} -n auto -v tests
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@v3
-      if: ${{ failure() }}
+    if: ${{ failure() }}
