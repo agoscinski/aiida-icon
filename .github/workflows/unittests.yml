@@ -56,6 +56,7 @@ jobs:
         which gcc-11
         which g++-11
         which gfortran-11
+        spack add python@${{matrix.python-version}}
         spack -e . install
 
     - name: Run
@@ -80,8 +81,8 @@ jobs:
       shell: spack-bash {0}
       run: |
         spack env activate .
-        spack install python@${{matrix.python-version}}
-        spack load python
+        which python
+        which pip
         pip install --upgrade pip 
         pip install hatch
 
@@ -89,5 +90,4 @@ jobs:
       shell: spack-bash {0}
       run: |
         spack env activate .
-        spack load python
         hatch test -py ${{matrix.python-version}} -n auto -v
