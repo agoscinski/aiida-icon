@@ -53,6 +53,7 @@ jobs:
         spack -e . install
 
     - name: Run
+      shell: spack-bash {0}
       run: |
         spack env activate .
         spack env status
@@ -70,14 +71,13 @@ jobs:
         python-version: ${{matrix.python-version}}
 
     - name: install Python dependencies
-      shell: spack-bash
       run: |
         spack env activate .
         pip install --upgrade pip 
         pip install hatch
 
     - name: run unittests
-      shell: spack-bash
+      shell: spack-bash {0}
       run: |
         spack env activate .
         hatch test -py ${{matrix.python-version}} -n auto -v
