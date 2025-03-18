@@ -93,4 +93,4 @@ jobs:
         hatch test -py ${{matrix.python-version}} -n auto -v tests
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@v3
-    if: ${{ failure() }}
+      if: ${{ failure() }}
