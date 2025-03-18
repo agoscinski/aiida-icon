@@ -14,7 +14,11 @@ def test_calc(aiida_computer_local, aiida_code_installed, tmp_path):
     if result.returncode:
         raise RuntimeError("Could not find icon executable for tests.")
     filepath_executable = result.stdout.decode().strip()
-    code = aiida_code_installed(default_calc_job_plugin="icon.icon", computer=aiida_computer_local(), filepath_executable=filepath_executable)
+    code = aiida_code_installed(default_calc_job_plugin="icon.icon",
+                                computer=aiida_computer_local(),
+                                filepath_executable=filepath_executable,
+                                prepend_text="/home/runner/work/aiida-icon/aiida-icon/spack/bin/spack env activate .")
+
     datapath = pathlib.Path(__file__).parent.absolute() / "data" / "simple_icon_run"
     builder = code.get_builder()
     make_remote = functools.partial(aiida.orm.RemoteData, computer=code.computer)
