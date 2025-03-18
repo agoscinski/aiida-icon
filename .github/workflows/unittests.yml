@@ -39,18 +39,16 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Spack
-      uses: spack/setup-spack@v2
-      #env:
-      #  GITHUB_USER: ${{ github.actor }}
-      #  GITHUB_TOKEN: ${{ secrets.SPACK_OCI_TOKEN }}
-      with:
-        buildcache: true  # Configure oci://ghcr.io/spack/github-actions-buildcache
+    #- name: Set up Spack
+    #  uses: spack/setup-spack@v2
+    #  #env:
+    #  #  GITHUB_USER: ${{ github.actor }}
+    #  #  GITHUB_TOKEN: ${{ secrets.SPACK_OCI_TOKEN }}
+    #  with:
+    #    buildcache: true  # Configure oci://ghcr.io/spack/github-actions-buildcache
 
     - name: Setup upterm session
       uses: lhotari/action-upterm@v1
-      with:
-        limit-access-to-users: agoscinski
 
     #- name: Install
     #  run: |
