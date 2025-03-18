@@ -54,8 +54,6 @@ jobs:
         which g++-11
         which gfortran-11
 
-    #spack -e . install
-
     - name: Setup upterm session
       shell: spack-bash {0}
       uses: lhotari/action-upterm@v1
