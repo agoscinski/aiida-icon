@@ -56,7 +56,7 @@ jobs:
         which gcc-11
         which g++-11
         which gfortran-11
-        spack add python@${{matrix.python-version}}
+        spack -e . add python@${{matrix.python-version}}
         spack -e . install
 
     - name: Run
