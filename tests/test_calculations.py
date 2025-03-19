@@ -7,7 +7,7 @@ from aiida.common import folders
 from aiida_icon import calculations
 
 @pytest.mark.icon_installed
-def test_calc(aiida_computer_local, aiida_code_installed, tmp_path):
+def test_calc(aiida_computer_local, aiida_code_installed):
     import aiida
     import functools
     result = subprocess.run(["which", "icon"], capture_output=True)
@@ -16,9 +16,7 @@ def test_calc(aiida_computer_local, aiida_code_installed, tmp_path):
     filepath_executable = result.stdout.decode().strip()
     code = aiida_code_installed(default_calc_job_plugin="icon.icon",
                                 computer=aiida_computer_local(),
-                                filepath_executable=filepath_executable,
-                                prepend_text="/home/runner/work/aiida-icon/aiida-icon/spack/bin/spack env activate .")
-
+                                filepath_executable=filepath_executable)
     datapath = pathlib.Path(__file__).parent.absolute() / "data" / "simple_icon_run"
     builder = code.get_builder()
     make_remote = functools.partial(aiida.orm.RemoteData, computer=code.computer)
@@ -31,10 +29,12 @@ def test_calc(aiida_computer_local, aiida_code_installed, tmp_path):
     builder.dmin_wetgrowth_lookup = make_remote(
         remote_path=str(datapath.absolute() / "inputs" / "dmin_wetgrowth_lookup.nc")
     )
-    result = aiida.run(builder)
+    result = aiida.engine.run(builder)
 
-    #assert result.works
+    result["remote_folder"].base.attributes.all['remote_path']
 
+    #ECHAM6_CldOptProps.nc  _scheduler-stderr.txt  dmin_wetgrowth_lookup.nc  icon_grid_simple.nc   rrtmg_sw.nc               simple_icon_run_atm_2d
+    #_aiidasubmit.sh        _scheduler-stdout.txt  ecrad_data                icon_master.namelist  simple_icon_run.namelist  simple_icon_run_atm_3d_pl
     #prepare_path = tmp_path / "test_prepare_simple"
     #prepare_path.mkdir()
     #sandbox_folder = folders.SandboxFolder(prepare_path.absolute())
