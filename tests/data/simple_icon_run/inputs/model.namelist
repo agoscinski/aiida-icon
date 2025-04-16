@@ -1,3 +1,7 @@
+&run_nml
+ dtime                       = 300           ! time step of 300 seconds
+/
+
 ! grid_nml: horizontal grid --------------------------------------------------
 &grid_nml
  dynamics_grid_filename      =                   "icon_grid_simple.nc" ! array of the grid filenames for the dycore
