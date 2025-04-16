@@ -1,0 +1,18 @@
+! Copyright 2023 - 2024 Karlsruhe Institute of Technology (KIT) and Ludwig-Maximilians-Universität München (LMU)
+! SPDX-FileContributor: Oriol Tinto Prims, Fabian Jakub
+!
+! SPDX-License-Identifier: BSD-3-Clause
+
+&master_nml
+    lrestart_write_last         = .true.
+/
+&master_time_control_nml
+    calendar                    = "proleptic gregorian"
+    experimentStartDate  = '2000-01-01T00:00:00Z'
+    experimentStopDate   = '2000-01-01T00:00:08Z'
+/
+&master_model_nml
+    model_type =                1                       ! atmospheric model
+    model_name =                "ATMO"                  ! name of this model component
+    model_namelist_filename =   "icon_atmosphere_ideal.namelist"
+/
