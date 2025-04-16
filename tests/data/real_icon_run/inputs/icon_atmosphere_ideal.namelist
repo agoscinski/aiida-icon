@@ -1,0 +1,67 @@
+! Copyright 2023 - 2024 Karlsruhe Institute of Technology (KIT) and Ludwig-Maximilians-Universität München (LMU)
+! SPDX-FileContributor: Oriol Tinto Prims, Fabian Jakub
+!
+! SPDX-License-Identifier: BSD-3-Clause
+
+&run_nml
+    ltestcase                   = .TRUE.        ! idealized testcase runs
+    dtime                       = 300           ! time step of 300 seconds
+    output                      = 'nml'         ! use output nameslists
+    msg_level                   = 15
+    num_lev                     = 31
+    lvert_nest                  = .false.
+    ldynamics                   = .true.
+    ltransport                  = .true.
+    ntracer                     = 5
+    iforcing                    = 3
+/
+
+&grid_nml
+    dynamics_grid_filename      = 'icon_grid_0013_R02B04_R.nc'
+    dynamics_parent_grid_id     = 0
+    lredgrid_phys               = .true.
+/
+
+&nh_testcase_nml
+    nh_test_name                = 'APE_nwp'   ! testcase selection
+    ape_sst_case                = 'sst_qobs'
+/
+
+&nonhydrostatic_nml
+    damp_height                 = 18000
+    rayleigh_coeff              = 0.75
+/
+
+&nwp_phy_nml
+    lupatmo_phy = .FALSE.
+    inwp_surface                = 0
+
+/
+
+
+&parallel_nml
+    nproma                      = 16
+/
+
+! the following two output files are used to initialize the next run
+&output_nml
+    file_interval               = 'PT3600S'
+    output_start                = "2000-01-01T00:00:03Z"
+    output_end                  = "2000-01-01T00:00:30Z"
+    output_filename             = "init-test"
+    output_interval             = 'PT3600S'
+    include_last                = .true.
+    mode                        = 1
+    taxis_tunit                 = 1
+    ml_varlist                  = 'group:dwd_fg_atm_vars', 'group:dwd_fg_sfc_vars'
+/
+
+&output_nml
+    steps_per_file              = 1
+    output_start                = "2000-01-01T00:00:03Z"
+    output_end                  = "2000-01-01T00:00:30Z"
+    output_filename             = "init-test-ext"
+    include_last                = .true.
+    output_interval             = 'PT3600S'
+    ml_varlist                  = 'depth_lk', 'emis_rad', 'fr_lake', 'fr_land', 'topography_c', 'soiltyp', 'sso_stdh', 'sso_theta', 'sso_gamma', 'sso_sigma'
+/
