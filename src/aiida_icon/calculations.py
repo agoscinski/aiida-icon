@@ -101,6 +101,14 @@ class IconCalculation(engine.CalcJob):
                 model_namelist_data["grid_nml"]["dynamics_grid_filename"].strip(),
             )
         ]
+        if "ecrad_data" in self.inputs:
+            calcinfo.remote_symlink_list.append(
+                (
+                    self.inputs.code.computer.uuid,
+                    self.inputs.ecrad_data.get_remote_path(),
+                    model_namelist_data["radiation_nml"]["ecrad_data_path"].strip(),
+                )
+            )
         if "rrtmg_sw" in self.inputs:
             calcinfo.remote_symlink_list.append(
                 (
@@ -115,14 +123,6 @@ class IconCalculation(engine.CalcJob):
                     self.inputs.code.computer.uuid,
                     self.inputs.rrtmg_lw.get_remote_path(),
                     "rrtmg_lw.nc",
-                )
-            )
-        if "ecrad_data" in self.inputs:
-            calcinfo.remote_symlink_list.append(
-                (
-                    self.inputs.code.computer.uuid,
-                    self.inputs.ecrad_data.get_remote_path(),
-                    model_namelist_data["radiation_nml"]["ecrad_data_path"].strip(),
                 )
             )
         if "restart_file" in self.inputs:
@@ -140,15 +140,15 @@ class IconCalculation(engine.CalcJob):
                 "ECHAM6_CldOptProps.nc",
             )
         ]
-
         if "dmin_wetgrowth_lookup" in self.inputs:
-            calcinfo.calcinfo.append(
+            calcinfo.remote_copy_list.append(
                 (
                     self.inputs.code.computer.uuid,
                     self.inputs.dmin_wetgrowth_lookup.get_remote_path(),
                     "dmin_wetgrowth_lookup.nc",
                 )
             )
+
         calcinfo.local_copy_list = [
             (
                 self.inputs.master_namelist.uuid,

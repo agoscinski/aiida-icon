@@ -5,6 +5,7 @@ from aiida.common import folders
 
 from aiida_icon import calculations
 
+
 def test_prepare_for_calc(icon_calc, tmp_path):
     prepare_path = tmp_path / "test_prepare_simple"
     prepare_path.mkdir()
@@ -18,7 +19,7 @@ def test_prepare_for_calc(icon_calc, tmp_path):
 
     assert outputs_2d.exists()
     assert outputs_3d.exists()
-    assert "model.namelist" in local_copy_names
+    assert "icon_master.namelist" in local_copy_names
     assert "icon_grid_simple.nc" in remote_link_names
     assert "./ecrad_data" in remote_link_names
 
